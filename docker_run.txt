@@ -1,0 +1,87 @@
+- Docker image --help: help command
+- docker images: list docker images in my computer
+- docker search
+- docker pull <name>:<tag-version>
+- docker image rm <name>(or using ID instead) : remove an image docker
+- docker ps : list container 
+- exit: exit a container
+- docker tag <name or id> <name:tag>
+Run dockers use apache, php and mysql
+
+PARAMETER -------------------------------------
+--rm: after container closed, it will be deleted
+ -it: interactive mode on terminal
+--network <name_network>
+-d : tao xong chay nen
+-v: anh xa host vao container : 
+
+
+CREATE AN IMAGE: docker run -it <name>
+START A CONTANER: docker start <name or id>
+START A CONTAINER AND RUN IT ON TERMINAL: docker attach <name or id>
+EXIT FROM TERMIAL BUT IS RUNNING: ctrl + P, ctrl + Q
+STOP A CONTAINER IS RUNNING: docker stop <name or id>
+REMOVE A CONTAINER: docker rm <-f> <name or id>: -f force even is running
+--------------------------------------
+EXECUTE A COMMAND: docker exec <container> <command>
+FROM CONTAINER TO IMAGE: docker commit <name or id> <image:tag>
+SAVE AN IMAGE TO .TAZ FILE: docker save --output <file_name> <name or id>
+-> LOAD FROM A FILE BECOME AN IMAGE: docker load -i <file_name>
+--------------------------------------
+SHARED VOLUME BETWEEN HOST AND LOCAL
+- docker run -it -v <path-local>:<path-file-in-docker> <name or id>
+SHARED BETWEEN AMONG CONTAINERS: C1 AND C2 ARE RUNNING UBUNTU CONTAINER
+- docker run -it <path_machine>:<path_docker> < name orr id>
+- docker run -it --name C2 --volumes-from C1 <name or id>
+-> contaner C1 and contaier C2 both share data between
+VOLUME  -------------------------------------- 
+CHECK DOCKER VOLUME: docker volume ls
+CREARTE DOCEKR VOLUME: - docker volume create <name_volume>
+CHECK VOLUME'S INFORMATION: - docker volume inspect <name's volume>
+MOUNT VOLUME: -docker run -it --mount source=DISK,target=pathContainer <name or id>
+CREATE DOCKER FILE IN PATH_HOST: -docker volume create --opt device=<pathHost> --opt type=none --opt bind <DISK_NAME>
+->  không sử dụng tham số mount cho kiểu chạỵ này thay vào đó sử dụng tham số -v
+- docker run -it -v DISK_NAME:pathContainer <name or id>
+ex: docker run -it -v D1:/home/disk ubuntu
+NETWORKING  -------------------------------------- 
+bridge: default mặc định các container sẽ kết nối vào mạng cầu này,sẽ có địa chỉ ip riêng
+Connect among container and between container with outside
+CHECK NETEWORK: - docker network ls
+CHECK INFOR NETWORK'S : - docker network inspect <name or id>
+
+Example: 
+docker run -it --name B1 busybox
+docker run -it --name B2 busybox
+- B1 và B2 cùng kết nối qua 1 mạng cầu bridge nên có thể ping cho nhau, tuy nhiên không thể
+ping ra bên ngoài máyc chủ host được, muốn làm đươc điều đó ta phải ánh xạ cổng 8888 của máy chủ
+sang cổng 80 của container
+- docker run -it --name <name> -p port_host:port_container <name or id>
+-> we accept ip:8888 in localhost == container:80
+
+CREATE NETWORK: - docker network create --driver bridge(categ)  <name_network>
+DELETE NETWORK: - docker network rm <name_network>
+- docker run -it --network myNet --name B2 busybox
+CHANGE A CONTANER TO A NETWORK:
+- docker network connect <name_of_netework> <name_of_container>
+
+
+------------------------------------
+1. Install php:7.3 in 9000 port, network www-network
+2. Install httpd, get config file :
+- docker run --rm -v path_Host:path_Container  httpd cp /usr/local/apache2/conf/httpd.conf /home/mycode/
+
+
+
+
+
+
+1. Pull apache from docker hub
+- docker pull bitnami/apache 
+Run docker image:
+- docker run --name apache -p 8000:8080 -v path:/app bitnami/apache
+2. Pull php 
+
+
+* docker list images:
+- docker images
+
